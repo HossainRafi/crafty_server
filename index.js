@@ -19,7 +19,7 @@ async function run() {
     await client.connect();
     const productCollection = client.db("crafty").collection("product");
 
-    // All Products API
+    //========== All Products API ==========
     app.get("/product", async (req, res) => {
       const query = {};
       const cursor = productCollection.find(query);
@@ -27,7 +27,7 @@ async function run() {
       res.send(result);
     });
 
-    // Single Product API
+    //========== Single Product API ==========
     app.get("/product/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
@@ -41,7 +41,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 //================================================================================
 app.get("/", (req, res) => {
   res.send("Server Is Running....................");
