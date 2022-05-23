@@ -34,16 +34,23 @@ async function run() {
       const result = await productCollection.findOne(query);
       res.send(result);
     });
+
+    //===============================================================================
   } finally {
     //    client.close();
   }
 }
 run().catch(console.dir);
 
+//================================================================================
 app.get("/", (req, res) => {
   res.send("Server Is Running....................");
 });
 
 app.listen(port, () => {
-  console.log("Server Is Running In The Command Line", port, "............................");
+  console.log(
+    "Server Is Running In The Command Line",
+    port,
+    "............................"
+  );
 });
