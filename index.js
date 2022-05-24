@@ -20,6 +20,7 @@ async function run() {
     const productCollection = client.db("crafty").collection("product");
     const orderCollection = client.db("crafty").collection("order");
     const userCollection = client.db("crafty").collection("user");
+    const reviewCollection = client.db("crafty").collection("review");
 
     //========== All Products API ==========
     app.get("/products", async (req, res) => {
@@ -44,23 +45,38 @@ async function run() {
       res.send(result);
     });
 
-    //========== Profile Update API ==========
-    app.put("/user/:email", async (req, res) => {
-      const email = req.params.email;
-      const profile = req.body.profile;
-      const filter = { email };
-      const options = { upsert: true };
-      const updateDoc = {
-        $set: { profile },
-      };
-      const result = await userCollection.updateOne(filter, updateDoc, options);
-      res.send(result);
-    });
-    //========== Profile Get API ==========
+    //get user filtering email
     app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email };
       const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
+    // //update user for profile
+    // app.put("/user/:email", async (req, res) => {
+    //   const email = req.params.email;
+    //   const profile = req.body.profile;
+    //   const query = { email };
+    //   const options = { upsert: true };
+    //   const updateDoc = {
+    //     $set: {
+    //       profile,
+    //     },
+    //   };
+    //   const result = await userCollection.updateOne(query, updateDoc, options);
+    //   res.send(result);
+    // });
+    // //========== Post Review API ==========
+    // app.post("/review", async (req, res) => {
+    //   const review = req.body.review;
+    //   const result = await reviewCollection.insertOne(review);
+    //   res.send(result);
+    // });
+
+    //get all review
+    app.get("/review", async (req, res) => {
+      const result = await reviewCollection.find().toArray();
       res.send(result);
     });
     //===============================================================================
