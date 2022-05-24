@@ -18,9 +18,10 @@ async function run() {
   try {
     await client.connect();
     const productCollection = client.db("crafty").collection("product");
+    const orderCollection = client.db("crafty").collection("order");
 
     //========== All Products API ==========
-    app.get("/product", async (req, res) => {
+    app.get("/products", async (req, res) => {
       const query = {};
       const cursor = productCollection.find(query);
       const result = await cursor.toArray();
@@ -32,6 +33,13 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await productCollection.findOne(query);
+      res.send(result);
+    });
+
+    //========== Add Product API ==========
+    app.post("/product", async (req, res) => {
+      const product = req.body.purchase;
+      const result = await orderCollection.insertOne(product);
       res.send(result);
     });
 
