@@ -19,6 +19,7 @@ async function run() {
     await client.connect();
     const productCollection = client.db("crafty").collection("product");
     const orderCollection = client.db("crafty").collection("order");
+    const userCollection = client.db("crafty").collection("user");
 
     //========== All Products API ==========
     app.get("/products", async (req, res) => {
@@ -36,13 +37,32 @@ async function run() {
       res.send(result);
     });
 
-    //========== Add Product API ==========
+    //========== Purchase Product API ==========
     app.post("/product", async (req, res) => {
       const product = req.body.purchase;
       const result = await orderCollection.insertOne(product);
       res.send(result);
     });
 
+    //========== Profile Update API ==========
+    app.put("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const profile = req.body.profile;
+      const filter = { email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: { profile },
+      };
+      const result = await userCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+    //========== Profile Get API ==========
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
     //===============================================================================
   } finally {
     //    client.close();
