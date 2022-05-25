@@ -87,6 +87,12 @@ async function run() {
       const result = await reviewCollection.find().toArray();
       res.send(result);
     });
+
+    //========== Get User Filtering Email ==========
+    app.get("/order", async (req, res) => {
+      const result = await orderCollection.find().toArray();
+      res.send(result);
+    });
     //===============================================================================
   } finally {
     //    client.close();
