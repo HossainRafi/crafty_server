@@ -45,7 +45,7 @@ async function run() {
       res.send(result);
     });
 
-    //get user filtering email
+    //========== Get User Filtering Email ==========
     app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email };
@@ -53,28 +53,36 @@ async function run() {
       res.send(result);
     });
 
-    // //update user for profile
-    // app.put("/user/:email", async (req, res) => {
-    //   const email = req.params.email;
-    //   const profile = req.body.profile;
-    //   const query = { email };
-    //   const options = { upsert: true };
-    //   const updateDoc = {
-    //     $set: {
-    //       profile,
-    //     },
-    //   };
-    //   const result = await userCollection.updateOne(query, updateDoc, options);
-    //   res.send(result);
-    // });
-    // //========== Post Review API ==========
-    // app.post("/review", async (req, res) => {
-    //   const review = req.body.review;
-    //   const result = await reviewCollection.insertOne(review);
-    //   res.send(result);
-    // });
+    //========== Update User For Profile ==========
+    app.put("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const profile = req.body;
+      console.log(profile);
+      const query = { email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: profile.name,
+          email: profile.email,
+          education: profile.education,
+          linkedIn: profile.linkedIn,
+          location: profile.location,
+          phone: profile.phone,
+        },
+      };
+      const result = await userCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
 
-    //get all review
+    //========== Post Review API ==========
+    app.post("/review", async (req, res) => {
+      const review = req.body;
+      console.log(review);
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
+    //========== Get Review API ==========
     app.get("/review", async (req, res) => {
       const result = await reviewCollection.find().toArray();
       res.send(result);
