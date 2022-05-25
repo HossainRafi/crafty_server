@@ -45,7 +45,7 @@ async function run() {
       res.send(result);
     });
 
-    //========== Get User Filtering Email ==========
+    //========== Get User Filtering By Email ==========
     app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email };
@@ -88,17 +88,25 @@ async function run() {
       res.send(result);
     });
 
-    //========== Get User Filtering Email ==========
+    //========== Get User Filtering By Email ==========
     app.get("/order", async (req, res) => {
       const result = await orderCollection.find().toArray();
       res.send(result);
     });
 
-    // Product Delete API
+    //========== Product Delete API ==========
     app.delete("/order/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
       const result = await orderCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    //========== Add Product API ==========
+    app.post("/product", async (req, res) => {
+      const product = req.body.newProduct;
+      console.log(product);
+      const result = await productCollection.insertOne(product);
       res.send(result);
     });
     //===============================================================================
