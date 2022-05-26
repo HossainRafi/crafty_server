@@ -30,6 +30,14 @@ async function run() {
       res.send(result);
     });
 
+    //delete product
+    app.delete("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollection.deleteOne(query);
+      res.send(result);
+    });
+
     //========== Single Product API ==========
     app.get("/product/:id", async (req, res) => {
       const id = req.params.id;
@@ -39,9 +47,9 @@ async function run() {
     });
 
     //========== Purchase Product API ==========
-    app.post("/product", async (req, res) => {
-      const product = req.body.purchase;
-      const result = await orderCollection.insertOne(product);
+    app.post("/order", async (req, res) => {
+      const order = req.body.purchase;
+      const result = await orderCollection.insertOne(order);
       res.send(result);
     });
 
@@ -104,7 +112,7 @@ async function run() {
 
     //========== Add Product API ==========
     app.post("/product", async (req, res) => {
-      const product = req.body.newProduct;
+      const product = req.body.addProduct;
       console.log(product);
       const result = await productCollection.insertOne(product);
       res.send(result);
