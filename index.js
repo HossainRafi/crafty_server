@@ -140,7 +140,7 @@ async function run() {
       res.send(order);
     });
 
-    // ============================
+    // ============ Payment Send ================
     app.post("/create-payment-intent", async (req, res) => {
       const service = req.body;
       const price = service.price;
@@ -156,6 +156,7 @@ async function run() {
       }
     });
 
+    // ========== Payment Update ==========
     app.patch("/order/:id", async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
