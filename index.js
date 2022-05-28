@@ -96,23 +96,23 @@ async function run() {
     });
 
     //========== Admin Create ==========
-    app.put("/user/admin/:email", async (req, res) => {
-      const email = req.params.email;
-      const query = { email };
-      const options = { upsert: true };
-      const updateDoc = {
-        $set: {
-          name: profile.name,
-          email: profile.email,
-          education: profile.education,
-          linkedIn: profile.linkedIn,
-          location: profile.location,
-          phone: profile.phone,
-        },
-      };
-      const result = await userCollection.updateOne(query, updateDoc, options);
-      res.send(result);
-    });
+    // app.put("/user/admin/:email", async (req, res) => {
+    //   const email = req.params.email;
+    //   const query = { email };
+    //   const options = { upsert: true };
+    //   const updateDoc = {
+    //     $set: {
+    //       name: profile.name,
+    //       email: profile.email,
+    //       education: profile.education,
+    //       linkedIn: profile.linkedIn,
+    //       location: profile.location,
+    //       phone: profile.phone,
+    //     },
+    //   };
+    //   const result = await userCollection.updateOne(query, updateDoc, options);
+    //   res.send(result);
+    // });
 
     //========== Post Review API ==========
     app.post("/review", async (req, res) => {
