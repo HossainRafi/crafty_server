@@ -22,6 +22,7 @@ async function run() {
     const orderCollection = client.db("crafty").collection("order");
     const userCollection = client.db("crafty").collection("user");
     const reviewCollection = client.db("crafty").collection("review");
+    const paymentCollection = client.db("crafty").collection("payments");
 
     //========== All Products API ==========
     app.get("/products", async (req, res) => {
@@ -153,6 +154,22 @@ async function run() {
         });
         res.send({ clientSecret: paymentIntent.client_secret });
       }
+    });
+
+    app.patch("/order/:id", async (req, res) => {
+      const id = req.params.id;
+      const payment = req.body;
+      const filter = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          paid: true,
+          transactionId: payment.transactionId,
+        },
+      };
+
+      const result = await paymentCollection.insertOne(payment);
+      const updatedOrder = await orderCollection.updateOne(filter, updatedDoc);
+      res.send(updatedOrder);
     });
     //===============================================================================
   } finally {
