@@ -68,11 +68,36 @@ async function run() {
       res.send(result);
     });
 
+    //========== Make Admin API ==========
+    app.get("/user", async (req, res) => {
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+
     //========== Update User Profile ==========
     app.put("/user/:email", async (req, res) => {
       const email = req.params.email;
       const profile = req.body;
       console.log(profile);
+      const query = { email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: profile.name,
+          email: profile.email,
+          education: profile.education,
+          linkedIn: profile.linkedIn,
+          location: profile.location,
+          phone: profile.phone,
+        },
+      };
+      const result = await userCollection.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
+
+    //========== Admin Create ==========
+    app.put("/user/admin/:email", async (req, res) => {
+      const email = req.params.email;
       const query = { email };
       const options = { upsert: true };
       const updateDoc = {
